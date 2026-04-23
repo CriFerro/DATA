@@ -1,7 +1,8 @@
 # R code for classifying data
 library(terra)
 library(imageRy)
-
+library(ggplot2)
+library(patchwork)
 im.list()
 
 sun<-im.import("Solar_Orbiter_s_first_views_of_the_Sun_pillars.jpg")
@@ -54,4 +55,20 @@ tab.out <- data.frame(
   perc2006= c(45,55)
 )
 
+#GRAFICO usando ggplot
+ggplot(tabout,aes(x=class, y=perc1992, color=class)) + geom_bar(stat="identity", fill="white") 
+ggplot(tabout,aes(x=class, y=perc1992, color=class)) + geom_bar(stat="identity", fill="red") 
+#aes: estetiche (x,y, colore), bar plot 
+ggplot(tabout,aes(x=class, y=perc2006, color=class)) + geom_bar(stat="identity", fill="white") 
+ggplot(tabout, aes(x=class, y=perc2006, color= class)) + geom_bar(stat="identity", fill="red")
+
+#Using patchwork
+p1 <- ggplot(tabout,aes(x=class, y=perc1992, color=class)) + 
+geom_bar(stat="identity", fill="white") + #barplot
+ylim(c(0,100)) + #limits
+theme(legend.position="none") + # removing legend 
+theme_dark() #posso fare altri temi 
+p2 <- ggplot(tabout,aes(x=class, y=perc2006, color=class)) + 
+geom_bar(stat="identity", fill="white") + ylim(c(0,100)) + theme_dark()
+p1+p2
 
